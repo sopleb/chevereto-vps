@@ -53,7 +53,7 @@ else
   $SUDO apt-get install -qq -y nginx-full php8.3-fpm certbot python3-certbot-nginx
 fi
 
-$SUDO apt-get install -qq -y ca-certificates software-properties-common unzip ffmpeg
+$SUDO apt-get install -qq -y ca-certificates software-properties-common unzip ffmpeg cron
 $SUDO apt-get install -qq -y mariadb-server
 $SUDO apt-get install -qq -y php8.3 php8.3-{bcmath,common,cli,curl,fileinfo,gd,imagick,intl,mbstring,mysql,opcache,pdo,pdo-mysql,xml,xmlrpc,zip}
 
