@@ -3,10 +3,10 @@
 set -e
 
 if [ "$(id -u)" -ne 0 ]; then
-    if ! dpkg -l | grep -q sudo; then
-        echo "sudo package is not installed. Please install sudo first."
-        exit 1
-    fi
+    if ! command -v sudo &>/dev/null; then
+    echo "sudo package is not installed. Please install sudo first."
+    exit 1
+fi
     echo "Running with sudo privileges..."
     SUDO='sudo'
 else
@@ -29,7 +29,7 @@ install_php_repo() {
 
 if ! dpkg -l | grep -q apt-transport-https; then
     echo "apt-transport-https is not installed"
-    $SUDO apt update -qq && $SUDO apt install -qq -y apt-transport-https curl
+    $SUDO apt update -qq && $SUDO apt install -qq -y apt-transport-https
     install_php_repo
 else
     echo "apt-transport-https is already installed"
@@ -42,15 +42,15 @@ update() {
 }
 
 update
-$SUDO apt install -qq -y ca-certificates software-properties-common python3-certbot-apache unzip ffmpeg
+$SUDO apt install -qq -y ca-certificates software-properties-common unzip ffmpeg
 $SUDO apt install -qq -y mariadb-server
 $SUDO apt install -qq -y php8.3 php8.3-{bcmath,common,cli,curl,fileinfo,gd,imagick,intl,mbstring,mysql,opcache,pdo,pdo-mysql,xml,xmlrpc,zip}
 
 read -p "Do you want to install nginx or apache? (nginx/apache): " webserver_choice
 if [ "$webserver_choice" = "apache" ]; then
-  $SUDO apt install -qq -y apache2 libapache2-mod-php8.3
+  $SUDO apt install -qq -y apache2 libapache2-mod-php8.3 certbot python3-certbot-apache
 else
-  $SUDO apt install -qq -y nginx-full php8.3-fpm
+  $SUDO apt install -qq -y nginx-full php8.3-fpm certbot python3-certbot-nginx
 fi
 
 # composer
