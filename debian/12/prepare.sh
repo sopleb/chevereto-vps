@@ -37,7 +37,13 @@ update() {
 $SUDO apt install -qq -y ca-certificates software-properties-common python3-certbot-apache unzip ffmpeg
 $SUDO apt install -qq -y mariadb-server
 $SUDO apt install -qq -y php8.3 php8.3-{bcmath,common,cli,curl,fileinfo,gd,imagick,intl,mbstring,mysql,opcache,pdo,pdo-mysql,xml,xmlrpc,zip}
-$SUDO apt install -qq -y nginx-full php8.3-fpm
+
+read -p "Do you want to install nginx or apache? (nginx/apache): " webserver_choice
+if [ "$webserver_choice" = "apache" ]; then
+  $SUDO apt install -qq -y apache2 libapache2-mod-php8.3
+else
+  $SUDO apt install -qq -y nginx-full php8.3-fpm
+fi
 
 # composer
 if ! command -v composer &>/dev/null; then
