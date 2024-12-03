@@ -18,15 +18,22 @@ Updating system packages...
 This could take some minutes
 EOF
 
+install_php_repo() {
+    if ! command -v curl &>/dev/null; then
+      echo "curl is not installed. Installing curl..."
+      $SUDO apt update -qq && $SUDO apt install -qq -y curl
+    fi
+    $SUDO curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.org/php/apt.gpg
+    $SUDO sh -c 'echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
+}
+
 if ! dpkg -l | grep -q apt-transport-https; then
     echo "apt-transport-https is not installed"
     $SUDO apt update -qq && $SUDO apt install -qq -y apt-transport-https curl
-    $SUDO curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.org/php/apt.gpg
-    $SUDO sh -c 'echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
+    install_php_repo
 else
     echo "apt-transport-https is already installed"
-    $SUDO curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.org/php/apt.gpg
-    $SUDO sh -c 'echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
+    install_php_repo
 fi
 
 update() {
@@ -34,6 +41,7 @@ update() {
     $SUDO apt upgrade -qq -y >/dev/null
 }
 
+update
 $SUDO apt install -qq -y ca-certificates software-properties-common python3-certbot-apache unzip ffmpeg
 $SUDO apt install -qq -y mariadb-server
 $SUDO apt install -qq -y php8.3 php8.3-{bcmath,common,cli,curl,fileinfo,gd,imagick,intl,mbstring,mysql,opcache,pdo,pdo-mysql,xml,xmlrpc,zip}
@@ -62,6 +70,9 @@ if ! command -v composer &>/dev/null; then
 else
     composer selfupdate
 fi
+
+# safe update
+update
 
 $SUDO systemctl restart nginx
 
