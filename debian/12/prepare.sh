@@ -21,7 +21,7 @@ EOF
 install_php_repo() {
     if ! command -v curl &>/dev/null; then
       echo "curl is not installed. Installing curl..."
-      $SUDO apt update -qq && $SUDO apt install -qq -y curl
+      $SUDO apt-get update -qq && $SUDO apt-get install -qq -y curl
     fi
     $SUDO curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.org/php/apt.gpg
     $SUDO sh -c 'echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
@@ -29,7 +29,7 @@ install_php_repo() {
 
 if ! dpkg -l | grep -q apt-transport-https; then
     echo "apt-transport-https is not installed"
-    $SUDO apt update -qq && $SUDO apt install -qq -y apt-transport-https
+    $SUDO apt-get update -qq && $SUDO apt-get install -qq -y apt-transport-https
     install_php_repo
 else
     echo "apt-transport-https is already installed"
@@ -37,20 +37,20 @@ else
 fi
 
 update() {
-    DEBIAN_FRONTEND=noninteractive $SUDO apt update -y -qq >/dev/null
-    $SUDO apt upgrade -qq -y >/dev/null
+    DEBIAN_FRONTEND=noninteractive $SUDO apt-get update -y -qq >/dev/null
+    $SUDO apt-get upgrade -qq -y >/dev/null
 }
 
 update
-$SUDO apt install -qq -y ca-certificates software-properties-common unzip ffmpeg
-$SUDO apt install -qq -y mariadb-server
-$SUDO apt install -qq -y php8.3 php8.3-{bcmath,common,cli,curl,fileinfo,gd,imagick,intl,mbstring,mysql,opcache,pdo,pdo-mysql,xml,xmlrpc,zip}
+$SUDO apt-get install -qq -y ca-certificates software-properties-common unzip ffmpeg
+$SUDO apt-get install -qq -y mariadb-server
+$SUDO apt-get install -qq -y php8.3 php8.3-{bcmath,common,cli,curl,fileinfo,gd,imagick,intl,mbstring,mysql,opcache,pdo,pdo-mysql,xml,xmlrpc,zip}
 
 read -p "Do you want to install nginx or apache? (nginx/apache): " webserver_choice
 if [ "$webserver_choice" = "apache" ]; then
-  $SUDO apt install -qq -y apache2 libapache2-mod-php8.3 certbot python3-certbot-apache
+  $SUDO apt-get install -qq -y apache2 libapache2-mod-php8.3 certbot python3-certbot-apache
 else
-  $SUDO apt install -qq -y nginx-full php8.3-fpm certbot python3-certbot-nginx
+  $SUDO apt-get install -qq -y nginx-full php8.3-fpm certbot python3-certbot-nginx
 fi
 
 # composer
