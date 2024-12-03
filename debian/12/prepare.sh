@@ -23,6 +23,10 @@ install_php_repo() {
       echo "curl is not installed. Installing curl..."
       $SUDO apt-get update -qq && $SUDO apt-get install -qq -y curl
     fi
+    if ! command -v lsb_release &>/dev/null; then
+      echo "installing lsb_release"
+      $SUDO apt-get update -qq && $SUDO apt-get install -qq -y lsb-release
+    fi
     $SUDO curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.org/php/apt.gpg
     $SUDO sh -c 'echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
 }
