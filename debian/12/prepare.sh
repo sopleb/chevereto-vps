@@ -78,6 +78,4 @@ fi
 # safe update
 update
 
-$SUDO systemctl restart nginx
-
 echo "[OK] Stack ready for Chevereto!"
