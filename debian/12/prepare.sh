@@ -55,7 +55,7 @@ fi
 
 $SUDO apt-get install -qq -y ca-certificates software-properties-common unzip ffmpeg
 $SUDO apt-get install -qq -y mariadb-server
-$SUDO apt-get install -qq -y php8.3-{bcmath,common,cli,curl,fileinfo,gd,imagick,intl,mbstring,mysql,opcache,pdo,pdo-mysql,xml,xmlrpc,zip}
+$SUDO apt-get install -qq -y php8.3 php8.3-{bcmath,common,cli,curl,fileinfo,gd,imagick,intl,mbstring,mysql,opcache,pdo,pdo-mysql,xml,xmlrpc,zip}
 
 # composer
 if ! command -v composer &>/dev/null; then
